@@ -1,9 +1,7 @@
-import { AuthPage } from "../pages/AuthPage"
 import { HomePage } from "../pages/HomePage"
 
 const routes = {
-    '/': () => <HomePage />,
-    '/auth': () => <AuthPage />,
+    '/home': () => <HomePage />,
 }
 
 export default routes

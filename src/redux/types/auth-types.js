@@ -1,0 +1,5 @@
+export const SET_LOADING = 'SET_LOADING'
+export const SET_AUTH = 'SET_AUTH'
+export const SET_USER = 'SET_USER'
+export const SET_TOKEN_EXPIRED = 'SET_TOKEN_EXPIRED'
+export const SET_STORAGE = 'SET_STORAGE'
