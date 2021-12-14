@@ -2,6 +2,7 @@ import { Button, Grid, LinearProgress, makeStyles, Paper, TextField, Typography,
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useValidation } from '../../hooks/validation-hook'
+import { register } from '../../redux/actions/auth-actions'
 // import { registration } from '../../redux/actions/auth-actions'
 import styles from './Form.style'
 
@@ -11,27 +12,28 @@ const RegisterForm = ({ changeForm }) => {
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('xs'))
     const [form, setForm] = useState({})
     const [errors, validate, rule] = useValidation(form)
+    const [error, setError] = useState(null)
     const { isLoading } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
     const changeHandler = (event) =>
         setForm({ ...form, [event.target.name]: event.target.value })
 
-    const submitHandler = () => {
+    const submitHandler = async () => {
         if (formIsValid()) {
-            // dispatch(registration({
-            //     login: form.login,
-            //     password: form.password,
-            //     name: form.name,
-            //     surname: form.surname
-            // }))
+            const response = await dispatch(register(form))
+            if (response.status === 200) {
+                changeForm()
+            } else {
+                setError(response)
+            }
         }
     }
 
     const formIsValid = () =>
         validate([
             rule('login').isRequired('Обязательное поле').result,
-            rule('name').isRequired('Обязательное поле').minLength(2, 'Минимум 2 символа').result,
+            rule('username').isRequired('Обязательное поле').minLength(2, 'Минимум 2 символа').result,
             rule('surname').isRequired('Обязательное поле').minLength(2, 'Минимум 2 символа').result,
             rule('password').isRequired('Обязательное поле').minLength(4, 'Минимум 4 символа').result,
             rule('confirmedPassword').isEqual(form['password'], 'Пароли не совпадают').result,
@@ -46,6 +48,7 @@ const RegisterForm = ({ changeForm }) => {
             >
                 Регистрация
             </Typography>
+            {error && <Typography className={classes.error} variant='body1'>{error}</Typography>}
             {isLoading && <LinearProgress color='primary' />}
             <Grid
                 container
@@ -68,11 +71,11 @@ const RegisterForm = ({ changeForm }) => {
                     label='Имя'
                     size={isSmallScreen ? 'small' : 'medium'}
 
-                    name='name'
-                    value={form.name || ''}
+                    name='username'
+                    value={form.username || ''}
                     onChange={changeHandler}
-                    error={!!errors.name}
-                    helperText={errors.name}
+                    error={!!errors.username}
+                    helperText={errors.username}
                 />
                 <TextField
                     variant='outlined'

@@ -18,18 +18,20 @@ export const initInterceptors = store => {
     api.interceptors.response.use(
         config => config,
         error => {
-            if (error.response.status === 401) {
-                store.dispatch(setTokenExpired(true))
-                const { storage } = store.getState().auth
-                storage.removeItem('token')
-                storage.removeItem('username')
-            }
+            // if (error.response.status === 401) {
+            //     store.dispatch(setTokenExpired(true))
+            //     const { storage } = store.getState().auth
+            //     storage.removeItem('token')
+            //     storage.removeItem('username')
+            // }
 
             return Promise.reject(error)
         }
     )
 
 }
+
+export const delay = (time = 300) => new Promise(resolve => setTimeout(() => resolve(), time))
 
 
 export default api

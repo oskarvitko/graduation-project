@@ -13,7 +13,7 @@ const Auth = () => {
     return (
         <Box className={classes.page}>
             <Container className={classes.container}>
-                <Typography variant='h2' align='center' className={classes.title}>Universe Library</Typography>
+                <Typography variant='h2' align='center' className={classes.title}>Библиотека университета</Typography>
                 <Grid
                     container
                     direction="column"

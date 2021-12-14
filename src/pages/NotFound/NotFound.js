@@ -31,8 +31,6 @@ const StyledContainer = styled(Container)({
 })
 
 const NotFound = () => {
-    console.log(useTheme())
-
     return (
         <StyledContainer>
             <StyledText component="h1" >Страница не найдена <span>404!</span></StyledText>

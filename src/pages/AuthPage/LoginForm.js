@@ -37,7 +37,7 @@ const LoginForm = ({ changeForm }) => {
                     localStorage.removeItem('storage')
                 }
             } else {
-                setError(response.data.errorText)
+                setError(response)
             }
         }
     }

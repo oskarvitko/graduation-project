@@ -1,29 +1,31 @@
+import { Button, Container, FormControl, Grid, List, ListItem, Paper, TextField, Typography } from '@material-ui/core'
+import { Bookmark, BookmarkBorderOutlined } from '@material-ui/icons'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AppBackdrop from '../../components/AppBackdrop/AppBackdrop'
+import MaterialsList from '../../components/MaterialsList/MaterialsList'
+import { delay } from '../../http'
 import { auth } from '../../redux/actions/auth-actions'
 
 const Home = () => {
-    const dispatch = useDispatch()
-    const { isLoading } = useSelector(state => state.auth)
+    const [isLoading, setLoading] = useState(true)
 
-    const [student, setStudent] = useState(null)
+    const {
+        materials
+    } = useSelector(state => state.material)
 
-    const fetchData = useCallback(async () => {
-        const data = await dispatch(auth())
-        setStudent(data)
-    }, [dispatch])
+    useEffect(async () => {
+        await delay(300)
+        setLoading(false)
+    }, [])
 
-    useEffect(() => {
-        fetchData()
-    }, [fetchData])
-
-    if (isLoading) return <AppBackdrop open />
+    if (isLoading) return <AppBackdrop style={{ backgroundColor: '#fff' }} open={true} />
 
     return (
-        <div>
-            {student && student.name}
-        </div>
+        <Container>
+            <Typography variant='h5' style={{ fontWeight: 700, textAlign: 'center' }}>Самые популярные материалы</Typography>
+            <MaterialsList materials={materials.sort((first, second) => second.watched - first.watched).slice(0, 6)} />
+        </Container>
     )
 }
 

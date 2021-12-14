@@ -4,7 +4,7 @@ const theme = createTheme({
     palette: {
         primary: {
             main: '#8A33DC',
-            secondary: '#BB6BD9'
+            secondary: '#c085d6'
         }
     },
     breakpoints: {

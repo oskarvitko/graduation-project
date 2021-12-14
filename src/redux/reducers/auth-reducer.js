@@ -1,11 +1,29 @@
-import { SET_AUTH, SET_LOADING, SET_TOKEN_EXPIRED, SET_USER, SET_STORAGE } from "../types/auth-types"
+import { SET_AUTH, SET_LOADING, SET_TOKEN_EXPIRED, SET_USER, SET_STORAGE, SET_USERS } from "../types/auth-types"
 
 const initialState = {
     isLoading: false,
     isAuth: false,
     user: {},
     tokenExpired: false,
-    storage: null
+    storage: null,
+    users: [
+        {
+            username: 'Тестовый пользователь',
+            password: 'user',
+            login: 'user',
+            access_token: 'sometoken',
+            downloaded: 6,
+            surname: 'Фамилия тестового пользователя'
+        },
+        {
+            username: 'Оскар',
+            password: '12345',
+            login: 'oskarvitko16@gmail.com',
+            access_token: 'sometoken',
+            downloaded: 0,
+            surname: 'Витко'
+        }
+    ]
 }
 
 const authReducer = (state = initialState, action) => {
@@ -27,6 +45,11 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 storage: payload
+            }
+        case SET_USERS:
+            return {
+                ...state,
+                users: payload
             }
         default: return state
     }

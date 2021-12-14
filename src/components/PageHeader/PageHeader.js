@@ -10,10 +10,10 @@ const PageHeader = (props) => {
     const { user } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        const username = localStorage.getItem('username')
-        username && dispatch(setUser({ name: username }))
-    }, [dispatch])
+    // useEffect(() => {
+    //     const username = localStorage.getItem('username')
+    //     username && dispatch(setUser({ name: username }))
+    // }, [dispatch])
 
     return (
         <div>
@@ -30,6 +30,7 @@ const styles = theme => ({
     content: {
         paddingTop: theme.spacing(2),
         paddingBottom: theme.spacing(2),
+        backgroundColor: '#fff'
     },
     headerOffset: {
         ...theme.mixins.toolbar
