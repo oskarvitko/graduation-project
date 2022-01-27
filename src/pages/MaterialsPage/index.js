@@ -1,1 +1,0 @@
-export { default as MaterialsPage } from './Materials'
