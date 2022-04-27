@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import classes from './index.module.scss'
 
-const index = () => {
-    return <div>Home page</div>
+const Home = () => {
+    return <>Home page</>
 }
 
-export default index
+export default Home
