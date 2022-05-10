@@ -6,8 +6,9 @@
     "rules": {
       "jsx-quotes": [
         1,
-        "prefer-double"
-      ]
+        "prefer-double",
+      ],
+      "react-hooks/exhaustive-deps": "off"
     },
     "plugins": [
       "prettier"

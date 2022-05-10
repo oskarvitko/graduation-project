@@ -1,7 +1,3 @@
-import React from 'react'
-
-const NotFound = () => {
-    return <div>Not found page</div>
-}
+import NotFound from "./404";
 
 export default NotFound

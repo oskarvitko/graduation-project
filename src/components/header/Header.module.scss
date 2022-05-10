@@ -1,0 +1,60 @@
+.header {
+    background-color: var(--color-primary);
+    color: var(--color-text-secondary);
+    box-shadow: 0 0 3px 0 #333;border-radius: 0px !important;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    img {
+        width: 30px;
+        margin-right: 0.5rem;
+    }
+
+    span {
+        font-weight: 700;
+        line-height: 1;
+
+        div {
+            text-transform: uppercase;
+            font-weight: 900;
+            font-size: 1.2em;
+        }
+    }
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.list {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+    a {
+        font-size: 0.875rem;
+        padding: 1.2em 1.2em calc(1.2em - 5px);
+        position: relative;
+        font-weight: 500;
+        border-bottom: 4px solid transparent;
+
+        display: flex;
+        align-items: center;
+
+        svg {
+            margin-right: 5px;
+        }
+
+        &:hover {
+            background-color: var(--color-primary-darken);
+        }
+
+        &[aria-current="page"] {
+            border-color: var(--color-bg);
+        }
+    }
+}

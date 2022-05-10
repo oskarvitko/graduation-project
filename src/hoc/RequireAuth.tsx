@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { useLocation, Navigate } from 'react-router-dom'
 
-const RequireAuth = ({ children }) => {
+type RequireAuthProps = {
+    children: JSX.Element
+}
+
+const RequireAuth = ({ children }: RequireAuthProps) => {
     const location = useLocation()
     const auth = true
 
