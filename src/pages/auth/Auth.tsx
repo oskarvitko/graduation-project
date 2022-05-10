@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { Navigate } from 'react-router-dom'
 import { userSlice } from 'store/reducers/userReducer'
 import classes from './Auth.module.scss'
+import logo from 'static/logo.png'
 
 const Auth: FC = () => {
     const { auth } = useAppSelector((state) => state.user)
@@ -36,43 +37,46 @@ const Auth: FC = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ type: 'spring' }}
                     >
-                        <Typography className={classes.title} variant="h4">
-                            Авторизация
-                        </Typography>
-                        <TextField
-                            fullWidth
-                            variant="outlined"
-                            label="Логин (E-mail)"
-                            error={!!errors.email}
-                            helperText={errors?.email?.message}
-                            {...register('email', {
-                                required: {
-                                    value: true,
-                                    message: 'Поле должно быть заполнено',
-                                },
-                            })}
-                        />
-                        <TextField
-                            fullWidth
-                            variant="outlined"
-                            label="Пароль"
-                            error={!!errors.password}
-                            helperText={errors?.password?.message}
-                            {...register('password', {
-                                required: {
-                                    value: true,
-                                    message: 'Поле должно быть заполнено',
-                                },
-                            })}
-                        />
-                        <Button
-                            fullWidth
-                            size="large"
-                            variant="contained"
-                            type="submit"
-                        >
-                            Авторизоваться
-                        </Button>
+                        <img src={logo} alt="" />
+                        <div className={classes.content}>
+                            <Typography className={classes.title} variant="h4">
+                                Авторизация
+                            </Typography>
+                            <TextField
+                                fullWidth
+                                variant="outlined"
+                                label="Логин (E-mail)"
+                                error={!!errors.email}
+                                helperText={errors?.email?.message}
+                                {...register('email', {
+                                    required: {
+                                        value: true,
+                                        message: 'Поле должно быть заполнено',
+                                    },
+                                })}
+                            />
+                            <TextField
+                                fullWidth
+                                variant="outlined"
+                                label="Пароль"
+                                error={!!errors.password}
+                                helperText={errors?.password?.message}
+                                {...register('password', {
+                                    required: {
+                                        value: true,
+                                        message: 'Поле должно быть заполнено',
+                                    },
+                                })}
+                            />
+                            <Button
+                                fullWidth
+                                size="large"
+                                variant="contained"
+                                type="submit"
+                            >
+                                Авторизоваться
+                            </Button>
+                        </div>
                     </motion.form>
                 </div>
             </Container>
