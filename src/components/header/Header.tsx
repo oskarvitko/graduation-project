@@ -8,14 +8,17 @@ import { ROLES } from '../../constants'
 import AppProgress from './AppProgress'
 import { useAppDispatch, useAppSelector } from 'hook/redux'
 import { userSlice } from 'store/reducers/userReducer'
+import { Avatar, Button, Divider, Menu, MenuItem } from '@mui/material'
+import HeaderMenu from './HeaderMenu'
 
 const Header = () => {
     const { loadingProgress } = useAppSelector((state) => state.app)
-    const { auth } = useAppSelector((state) => state.user)
+    const { auth, email } = useAppSelector((state) => state.user)
     const dispatch = useAppDispatch()
 
     const logout = (e: any) => {
         e.preventDefault()
+
         dispatch(userSlice.actions.logout())
     }
 
@@ -40,14 +43,31 @@ const Header = () => {
                             Учебные издания
                         </PrivateLink>
                         {auth ? (
-                            <a href="/logout" onClick={logout}>
-                                <Logout />
-                                Выйти
-                            </a>
+                            <HeaderMenu
+                                menuItems={
+                                    <>
+                                        <MenuItem>
+                                            <AccountCircle sx={{ mr: 1 }} />
+                                            Профиль
+                                        </MenuItem>
+                                        <Divider />
+                                        <MenuItem onClick={logout}>
+                                            <Logout sx={{ mr: 1 }} />
+                                            Выйти
+                                        </MenuItem>
+                                    </>
+                                }
+                                button={(onClick) => (
+                                    <a href="/" onClick={onClick}>
+                                        <AccountCircle />
+                                        <span>{email}</span>
+                                    </a>
+                                )}
+                            />
                         ) : (
                             <NavLink to="/login">
                                 <AccountCircle />
-                                Вход
+                                <span>Вход</span>
                             </NavLink>
                         )}
                     </div>

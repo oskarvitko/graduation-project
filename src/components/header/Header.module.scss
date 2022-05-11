@@ -1,7 +1,12 @@
 .header {
     background-color: var(--color-primary);
     color: var(--color-text-secondary);
-    box-shadow: 0 0 3px 0 #333;border-radius: 0px !important;
+    box-shadow: 0 0 3px 0 #333;
+    border-radius: 0px;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    z-index: 1200;
 }
 
 .logo {
@@ -40,13 +45,17 @@
         padding: 1.2em 1.2em calc(1.2em - 5px);
         position: relative;
         font-weight: 500;
-        border-bottom: 4px solid transparent;
-
+        border-bottom: 3px solid transparent;
         display: flex;
         align-items: center;
+        border-radius: 0px;
 
-        svg {
-            margin-right: 5px;
+        & > * {
+            margin-left: 5px;
+
+            &:first-child {
+                margin: 0;
+            }
         }
 
         &:hover {
