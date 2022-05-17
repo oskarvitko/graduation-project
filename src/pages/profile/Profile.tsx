@@ -59,6 +59,8 @@ const Profile: React.FC = () => {
                     <Grid
                         component={motion.div}
                         container
+                        item
+                        key={key}
                         xs={12}
                         sx={{ overflow: 'hidden' }}
                         initial={{ scale: 0.7, opacity: 0 }}

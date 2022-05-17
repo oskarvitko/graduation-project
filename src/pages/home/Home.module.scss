@@ -4,7 +4,7 @@
     font-size: 2em;
     text-align: center;
     font-weight: 700;
-    margin: calc(.7em - 16px) 0 .7em 0;
+    margin: 0 0 .7em 0;
     padding-bottom: .7em;
     line-height: 1.1;
 
@@ -12,6 +12,10 @@
 }
 
 .home {
+    padding: calc(1.4em - 16px) 0 1.4em 0;
+    min-height: calc(100vh - 56px - 16px);
+    display: flex;
+    flex-direction: column;
 }
 
 .img {
@@ -43,6 +47,11 @@
     align-items: center;
 
     svg {
-        margin-left: 10px;
+        &:first-child {
+            margin-right: 5px;
+        }
+        &:last-child {
+            margin-left: 10px;
+        }
     }
 }

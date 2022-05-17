@@ -22,6 +22,11 @@ export const routes: RouteType[] = [
         isPrivate: true,
     },
     {
+        path: '/bookmarks',
+        component: <div>Избранное</div>,
+        isPrivate: true,
+    },
+    {
         path: '/login',
         component: <Auth />,
         isPrivate: false,

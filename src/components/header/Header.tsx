@@ -1,10 +1,10 @@
 import React from 'react'
-import { AccountCircle, Logout } from '@mui/icons-material'
+import { AccountCircle, Logout, Star } from '@mui/icons-material'
 import { Link, NavLink } from 'react-router-dom'
 import styles from './Header.module.scss'
 import logoUrl from '../../static/logo.png'
-import PrivateLink from './privateLink/PrivateLink'
-import { ROLES } from '../../constants'
+import PrivateBlock from '../privateBlock/PrivateBlock'
+import { ROLES, ROUTES } from '../../constants'
 import AppProgress from './AppProgress'
 import { useAppDispatch, useAppSelector } from 'hook/redux'
 import { userSlice } from 'store/reducers/userReducer'
@@ -40,10 +40,11 @@ const Header = () => {
                         </span>
                     </Link>
                     <div className={styles.list}>
-                        <NavLink to="/">Главная</NavLink>
-                        <PrivateLink roles={[ROLES.ADMIN]} to="/materials">
-                            Учебные издания
-                        </PrivateLink>
+                        <PrivateBlock>
+                            <NavLink to={ROUTES.materials.path}>
+                                {ROUTES.materials.text}
+                            </NavLink>
+                        </PrivateBlock>
                         {auth ? (
                             <HeaderMenu
                                 menuItems={
@@ -54,10 +55,21 @@ const Header = () => {
                                                 a: { px: 2, py: 1 },
                                             }}
                                         >
-                                            <PrivateLink to="/profile">
+                                            <NavLink to={ROUTES.profile.path}>
                                                 <AccountCircle sx={{ mr: 1 }} />
-                                                Профиль
-                                            </PrivateLink>
+                                                {ROUTES.profile.text}
+                                            </NavLink>
+                                        </MenuItem>
+                                        <MenuItem
+                                            sx={{
+                                                p: 0,
+                                                a: { px: 2, py: 1 },
+                                            }}
+                                        >
+                                            <NavLink to={ROUTES.bookmarks.path}>
+                                                <Star sx={{ mr: 1 }} />
+                                                {ROUTES.bookmarks.text}
+                                            </NavLink>
                                         </MenuItem>
                                         <Divider />
                                         <MenuItem onClick={logout}>

@@ -1,15 +1,7 @@
-import {
-    Card,
-    CardActionArea,
-    CardContent,
-    Divider,
-    Grid,
-    Typography,
-} from '@mui/material'
+import { Grid } from '@mui/material'
 import classes from './Home.module.scss'
 import homeBg from '../../static/home-bg.jpg'
-import { ArrowForward } from '@mui/icons-material'
-import { NavLink } from 'react-router-dom'
+import LinksList from './LinksList'
 
 const Home = () => {
     return (
@@ -19,7 +11,7 @@ const Home = () => {
                 <br />
                 Минского инновационного университета
             </h3>
-            <Grid container alignItems={'center'} spacing={2}>
+            <Grid container spacing={2}>
                 <Grid item xs={6}>
                     <p className={classes.description}>
                         Электронная библиотека Минского инновационного
@@ -56,25 +48,7 @@ const Home = () => {
                     />
                 </Grid>
             </Grid>
-            <Grid container spacing={2} sx={{ mt: 2 }}>
-                <Grid item xs={3}>
-                    <Card>
-                        <CardActionArea>
-                            <NavLink
-                                to="/materials"
-                                style={{ display: 'block' }}
-                            >
-                                <CardContent>
-                                    <div className={classes.cardContent}>
-                                        <span>Учебные издания</span>
-                                        <ArrowForward />
-                                    </div>
-                                </CardContent>
-                            </NavLink>
-                        </CardActionArea>
-                    </Card>
-                </Grid>
-            </Grid>
+            <LinksList />
         </div>
     )
 }

@@ -4,6 +4,7 @@ import Header from '../header'
 import { motion } from 'framer-motion'
 import { Box, Container } from '@mui/material'
 import classes from './Layout.module.scss'
+import BreadCrumbs from './BreadCrumbs'
 
 const Layout = () => {
     return (
@@ -15,6 +16,7 @@ const Layout = () => {
             <Header />
             <main className={classes.main}>
                 <Container sx={{ position: 'relative', zIndex: 1 }}>
+                    <BreadCrumbs />
                     <Outlet />
                 </Container>
             </main>
