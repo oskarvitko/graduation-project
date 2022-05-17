@@ -1,15 +1,15 @@
-import { useAppSelector } from './redux'
+import { useGetUserByTokenQuery } from 'api/userApi'
 
 const useRole = () => {
-    const { role } = useAppSelector((state) => state.user)
+    const { data: user } = useGetUserByTokenQuery()
 
-    const hasRole = (_role: string) => _role === role
+    const hasRole = (_role: string) => _role === user?.role
 
     const hasOneOfRoles = (roles: string[]) =>
-        roles.find((_role) => _role === role)
+        roles.find((_role) => _role === user?.role)
 
     return {
-        role,
+        role: user?.role,
         hasRole,
         hasOneOfRoles,
     }

@@ -4,27 +4,31 @@ import Layout from 'components/layout'
 import RequireAuth from '../hoc/RequireAuth'
 import { routes } from './routes'
 import { NotFoundPage } from '../pages'
-import { useAppDispatch } from 'hook/redux'
+import { useAppDispatch, useAppSelector } from 'hook/redux'
 import { userSlice } from 'store/reducers/userReducer'
 import { parseJwt } from 'util/jwt'
 import { Grid, LinearProgress } from '@mui/material'
 import { motion } from 'framer-motion'
 import { useLazyGetAllSpecialtiesQuery } from 'api/specialtyApi'
 import AppLoader from 'components/appLoader/appLoader'
+import { useGetUserByTokenQuery, useLazyGetUserByTokenQuery } from 'api/userApi'
 
 const AppRouter = () => {
     const dispatch = useAppDispatch()
     const [loading, setLoading] = useState(true)
-    const [getAllSpecialties] = useLazyGetAllSpecialtiesQuery()
+    const [getUserByToken] = useLazyGetUserByTokenQuery()
+    const { token } = useAppSelector((state) => state.user)
 
     const checkIsTokenValid = async () => {
-        const result = await getAllSpecialties('')
-        const token = localStorage.getItem('token')
-        if (result.isSuccess && token) {
-            const { role, email } = parseJwt(token)
-            dispatch(userSlice.actions.login({ role, email }))
+        try {
+            const user = await getUserByToken(token).unwrap()
+            if (user) {
+                dispatch(userSlice.actions.login(token))
+            }
+        } catch {
+        } finally {
+            setLoading(false)
         }
-        setLoading(false)
     }
 
     useEffect(() => {

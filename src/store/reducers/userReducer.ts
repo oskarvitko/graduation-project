@@ -1,30 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface UserState {
     auth: boolean
-    role: string | null
-    email: string | null
+    token: string
 }
 
 const initialState: UserState = {
     auth: false,
-    role: null,
-    email: null,
+    token: localStorage.getItem('token') || '',
 }
 
 export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        login(state, action) {
+        login(state, action: PayloadAction<string>) {
             state.auth = true
-            state.email = action.payload.email
-            state.role = action.payload.role
+            state.token = action.payload
         },
         logout(state) {
             state.auth = false
-            state.email = null
-            state.role = null
+            state.token = ''
             localStorage.removeItem('token')
         },
     },

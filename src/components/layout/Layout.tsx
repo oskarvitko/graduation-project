@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import Header from '../header'
 import { motion } from 'framer-motion'
+import { Box, Container } from '@mui/material'
+import classes from './Layout.module.scss'
 
 const Layout = () => {
     return (
@@ -11,8 +13,10 @@ const Layout = () => {
             transition={{ duration: 0.4 }}
         >
             <Header />
-            <main style={{ paddingTop: 56 }}>
-                <Outlet />
+            <main className={classes.main}>
+                <Container sx={{ position: 'relative', zIndex: 1 }}>
+                    <Outlet />
+                </Container>
             </main>
         </motion.div>
     )

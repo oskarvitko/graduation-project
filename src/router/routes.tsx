@@ -1,6 +1,7 @@
 import { ROLES } from '../constants'
 import Auth from 'pages/auth'
 import { HomePage } from '../pages'
+import Profile from 'pages/profile'
 
 export type RouteType = {
     path: string
@@ -17,12 +18,17 @@ export const routes: RouteType[] = [
     },
     {
         path: '/materials',
-        component: <HomePage />,
+        component: <div>Materials</div>,
         isPrivate: true,
     },
     {
-        path: 'login',
+        path: '/login',
         component: <Auth />,
         isPrivate: false,
+    },
+    {
+        path: '/profile',
+        component: <Profile />,
+        isPrivate: true,
     },
 ]

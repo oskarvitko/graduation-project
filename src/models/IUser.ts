@@ -4,6 +4,6 @@ export interface IUser {
     userName: string
     studentId: number
     course: number
-    spesialtyId: number
-    role?: string
+    specialtyId: string
+    role: string
 }

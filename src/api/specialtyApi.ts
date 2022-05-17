@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseApiQuery } from 'api'
-import { ISpecialty } from 'models/ISpetialty'
+import { ISpecialty } from 'models/ISpecialty'
 
 export const specialtyApi = createApi({
     reducerPath: 'specialtyApi',

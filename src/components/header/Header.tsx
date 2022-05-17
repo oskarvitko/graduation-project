@@ -8,12 +8,14 @@ import { ROLES } from '../../constants'
 import AppProgress from './AppProgress'
 import { useAppDispatch, useAppSelector } from 'hook/redux'
 import { userSlice } from 'store/reducers/userReducer'
-import { Avatar, Button, Divider, Menu, MenuItem } from '@mui/material'
+import { CircularProgress, Container, Divider, MenuItem } from '@mui/material'
 import HeaderMenu from './HeaderMenu'
+import { useGetUserByTokenQuery } from 'api/userApi'
 
 const Header = () => {
     const { loadingProgress } = useAppSelector((state) => state.app)
-    const { auth, email } = useAppSelector((state) => state.user)
+    const { auth } = useAppSelector((state) => state.user)
+    const { data: user, isLoading } = useGetUserByTokenQuery()
     const dispatch = useAppDispatch()
 
     const logout = (e: any) => {
@@ -25,7 +27,7 @@ const Header = () => {
     return (
         <header className={styles.header}>
             <AppProgress progress={loadingProgress} />
-            <div className="container">
+            <Container>
                 <nav className={styles.nav}>
                     <Link to="" className={styles.logo}>
                         <img
@@ -46,9 +48,16 @@ const Header = () => {
                             <HeaderMenu
                                 menuItems={
                                     <>
-                                        <MenuItem>
-                                            <AccountCircle sx={{ mr: 1 }} />
-                                            Профиль
+                                        <MenuItem
+                                            sx={{
+                                                p: 0,
+                                                a: { px: 2, py: 1 },
+                                            }}
+                                        >
+                                            <PrivateLink to="/profile">
+                                                <AccountCircle sx={{ mr: 1 }} />
+                                                Профиль
+                                            </PrivateLink>
                                         </MenuItem>
                                         <Divider />
                                         <MenuItem onClick={logout}>
@@ -60,7 +69,7 @@ const Header = () => {
                                 button={(onClick) => (
                                     <a href="/" onClick={onClick}>
                                         <AccountCircle />
-                                        <span>{email}</span>
+                                        <span>{user?.email}</span>
                                     </a>
                                 )}
                             />
@@ -72,7 +81,7 @@ const Header = () => {
                         )}
                     </div>
                 </nav>
-            </div>
+            </Container>
         </header>
     )
 }

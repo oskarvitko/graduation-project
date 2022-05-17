@@ -4,9 +4,14 @@
     box-shadow: 0 0 3px 0 #333;
     border-radius: 0px;
     position: fixed;
+    top: 0;
     left: 0;
     width: 100%;
     z-index: 1200;
+
+    a {
+        color: var(--color-text-secondary);
+    }
 }
 
 .logo {

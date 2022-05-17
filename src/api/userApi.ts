@@ -19,9 +19,20 @@ export const userApi = createApi({
                 url: '/Registration/registrationStudent',
                 method: 'POST',
                 body: data,
+                responseHandler: (response) => response.text(),
             }),
+        }),
+        getUserByToken: build.query<IUser, string>({
+            query: () => '/User/getUserInfo',
         }),
     }),
 })
 
-export const { useLoginMutation, useRegistrateStudentMutation } = userApi
+export const {
+    useLoginMutation,
+    useRegistrateStudentMutation,
+    useLazyGetUserByTokenQuery,
+} = userApi
+
+export const useGetUserByTokenQuery = () =>
+    userApi.useGetUserByTokenQuery(localStorage.getItem('token') || '')
