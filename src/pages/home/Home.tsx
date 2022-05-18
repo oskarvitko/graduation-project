@@ -2,6 +2,7 @@ import { Grid } from '@mui/material'
 import classes from './Home.module.scss'
 import homeBg from '../../static/home-bg.jpg'
 import LinksList from './LinksList'
+import Image from 'components/image/image'
 
 const Home = () => {
     return (
@@ -41,11 +42,16 @@ const Home = () => {
                     </p>
                 </Grid>
                 <Grid item xs={6}>
-                    <img
+                    <Image
                         src={homeBg}
                         className={classes.img}
                         alt="Электронная библиотека"
                     />
+                    {/* <img
+                        src={homeBg}
+                        className={classes.img}
+                        alt="Электронная библиотека"
+                    /> */}
                 </Grid>
             </Grid>
             <LinksList />

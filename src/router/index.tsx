@@ -21,9 +21,11 @@ const AppRouter = () => {
             if (user) {
                 dispatch(userSlice.actions.login(token))
             }
-        } catch {
-        } finally {
             setLoading(false)
+        } catch (e: any) {
+            if (e?.status === 401) return setLoading(false)
+
+            console.log(e)
         }
     }
 
