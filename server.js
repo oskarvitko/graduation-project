@@ -4,6 +4,8 @@ const path = require('path')
 require('dotenv').config()
 const PORT = process.env.PORT || 5001
 
+console.log('PORT IS', PORT)
+
 const app = express()
 
 app.use(favicon(__dirname + '/build/favicon.ico'))
