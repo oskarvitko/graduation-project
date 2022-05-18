@@ -8,14 +8,17 @@ import { useAppDispatch, useAppSelector } from 'hook/redux'
 import { userSlice } from 'store/reducers/userReducer'
 import AppLoader from 'components/appLoader/appLoader'
 import { useLazyGetUserByTokenQuery } from 'api/userApi'
+import { Alert, Snackbar } from '@mui/material'
 
 const AppRouter = () => {
     const dispatch = useAppDispatch()
     const [loading, setLoading] = useState(true)
+    const [open, setOpen] = useState(false)
     const [getUserByToken] = useLazyGetUserByTokenQuery()
     const { token } = useAppSelector((state) => state.user)
 
     const checkIsTokenValid = async () => {
+        setOpen(false)
         try {
             const user = await getUserByToken(token).unwrap()
             if (user) {
@@ -26,6 +29,8 @@ const AppRouter = () => {
             if (e?.status === 401) return setLoading(false)
 
             console.log(e)
+            setOpen(true)
+            setTimeout(checkIsTokenValid, 5000)
         }
     }
 
@@ -33,8 +38,26 @@ const AppRouter = () => {
         checkIsTokenValid()
     }, [])
 
+    const handleClose = (
+        event?: React.SyntheticEvent | Event,
+        reason?: string
+    ) => {
+        if (reason === 'clickaway') {
+            return
+        }
+
+        setOpen(false)
+    }
+
     return loading ? (
-        <AppLoader />
+        <>
+            <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+                <Alert variant="filled" severity="error" onClose={handleClose}>
+                    Unknown server error!
+                </Alert>
+            </Snackbar>
+            <AppLoader />
+        </>
     ) : (
         <Routes>
             <Route path="/" element={<Layout />}>
