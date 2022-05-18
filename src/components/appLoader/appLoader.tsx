@@ -1,5 +1,4 @@
-import { Backdrop, Grid, LinearProgress } from '@mui/material'
-import { AnimatePresence, motion } from 'framer-motion'
+import { Backdrop, LinearProgress } from '@mui/material'
 import { FC } from 'react'
 import logo from '../../static/logo.png'
 

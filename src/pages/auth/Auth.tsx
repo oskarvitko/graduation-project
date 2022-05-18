@@ -1,7 +1,6 @@
 import {
     Button,
     CircularProgress,
-    Container,
     SelectChangeEvent,
     Typography,
     FormControl,
@@ -17,9 +16,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { userSlice } from 'store/reducers/userReducer'
 import classes from './Auth.module.scss'
 import logo from 'static/logo.png'
-import { parseJwt } from 'util/jwt'
 import {
-    useGetUserByTokenQuery,
     useLazyGetUserByTokenQuery,
     useLoginMutation,
     useRegistrateStudentMutation,

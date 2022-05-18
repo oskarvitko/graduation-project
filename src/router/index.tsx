@@ -6,12 +6,8 @@ import { routes } from './routes'
 import { NotFoundPage } from '../pages'
 import { useAppDispatch, useAppSelector } from 'hook/redux'
 import { userSlice } from 'store/reducers/userReducer'
-import { parseJwt } from 'util/jwt'
-import { Grid, LinearProgress } from '@mui/material'
-import { motion } from 'framer-motion'
-import { useLazyGetAllSpecialtiesQuery } from 'api/specialtyApi'
 import AppLoader from 'components/appLoader/appLoader'
-import { useGetUserByTokenQuery, useLazyGetUserByTokenQuery } from 'api/userApi'
+import { useLazyGetUserByTokenQuery } from 'api/userApi'
 
 const AppRouter = () => {
     const dispatch = useAppDispatch()

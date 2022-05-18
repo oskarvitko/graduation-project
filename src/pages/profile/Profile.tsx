@@ -1,18 +1,5 @@
-import { TableBar } from '@mui/icons-material'
-import {
-    Container,
-    Divider,
-    Grid,
-    Skeleton,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableRow,
-    Typography,
-} from '@mui/material'
+import { Divider, Grid, Typography } from '@mui/material'
 import { motion } from 'framer-motion'
-import { Box } from '@mui/system'
 import { useGetAllSpecialtiesQuery } from 'api/specialtyApi'
 import { useGetUserByTokenQuery } from 'api/userApi'
 import AppCircleLoader from 'components/appCircleLoader/appCircleLoader'

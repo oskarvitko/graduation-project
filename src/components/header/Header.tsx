@@ -4,18 +4,18 @@ import { Link, NavLink } from 'react-router-dom'
 import styles from './Header.module.scss'
 import logoUrl from '../../static/logo.png'
 import PrivateBlock from '../privateBlock/PrivateBlock'
-import { ROLES, ROUTES } from '../../constants'
+import { ROUTES } from '../../constants'
 import AppProgress from './AppProgress'
 import { useAppDispatch, useAppSelector } from 'hook/redux'
 import { userSlice } from 'store/reducers/userReducer'
-import { CircularProgress, Container, Divider, MenuItem } from '@mui/material'
+import { Container, Divider, MenuItem } from '@mui/material'
 import HeaderMenu from './HeaderMenu'
 import { useGetUserByTokenQuery } from 'api/userApi'
 
 const Header = () => {
     const { loadingProgress } = useAppSelector((state) => state.app)
     const { auth } = useAppSelector((state) => state.user)
-    const { data: user, isLoading } = useGetUserByTokenQuery()
+    const { data: user } = useGetUserByTokenQuery()
     const dispatch = useAppDispatch()
 
     const logout = (e: any) => {

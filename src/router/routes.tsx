@@ -1,4 +1,3 @@
-import { ROLES } from '../constants'
 import Auth from 'pages/auth'
 import { HomePage } from '../pages'
 import Profile from 'pages/profile'

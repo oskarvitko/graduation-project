@@ -1,5 +1,5 @@
-import { Menu, MenuItem } from '@mui/material'
-import React, { FC, ReactNode } from 'react'
+import { Menu } from '@mui/material'
+import React, { FC } from 'react'
 
 type HeaderMenuProps = {
     menuItems: JSX.Element

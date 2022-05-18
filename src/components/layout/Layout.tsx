@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Header from '../header'
 import { motion } from 'framer-motion'
-import { Box, Container } from '@mui/material'
+import { Container } from '@mui/material'
 import classes from './Layout.module.scss'
 import BreadCrumbs from './BreadCrumbs'
 

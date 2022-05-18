@@ -1,7 +1,5 @@
 import { useAppSelector } from 'hook/redux'
 import useRole from 'hook/useRole'
-import React from 'react'
-import { NavLink } from 'react-router-dom'
 
 type PrivateBlockProps = {
     children: any
