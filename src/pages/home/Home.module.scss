@@ -1,0 +1,57 @@
+
+
+.title {
+    font-size: 2em;
+    text-align: center;
+    font-weight: 700;
+    margin: 0 0 .7em 0;
+    padding-bottom: .7em;
+    line-height: 1.1;
+
+    border-bottom: 1px solid #0000001f;
+}
+
+.home {
+    padding: calc(1.4em - 16px) 0 1.4em 0;
+    min-height: calc(100vh - 56px - 16px);
+    display: flex;
+    flex-direction: column;
+}
+
+.img {
+    width: 100%;
+}
+
+.description,
+.privacy {
+    line-height: 1.2;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.description {
+    margin-bottom: 1em;
+}
+
+.privacy {
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+.cardContent {
+    padding: 1em 0;
+    display: flex;
+    justify-content: center;
+    font-weight: 500 !important;
+    text-align: center;
+    align-items: center;
+
+    svg {
+        &:first-child {
+            margin-right: 5px;
+        }
+        &:last-child {
+            margin-left: 10px;
+        }
+    }
+}

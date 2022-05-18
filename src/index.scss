@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+:root,
+body {
+    --l: 35%;
+    --color: 1, 94%;
+    --color-bg: #fefefe;
+    --color-primary: #ad0805;
+    --color-primary-darken: #950300;
+    --color-primary-darkest: #790503;
+    --color-text-primary: #000;
+    --color-text-secondary: #fefefe;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+    font-family: 'Ubuntu', sans-serif !important;
+    border-radius: 4px;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+}
+
+.container {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+a {
+    display: inline-block;
+    text-decoration: none;
+    transition: background .2s ease;
+
+    color: var(--color-text-primary);
+}
+
+.MuiMenu-list {
+    a {
+        display: flex;
+        align-items: center;
+        color: var(--color-text-secondary);
+    }
+}
