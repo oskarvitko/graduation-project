@@ -1,75 +1,80 @@
-import { Menu } from '@mui/material'
+import { ChevronLeft, ChevronRight, Menu } from '@mui/icons-material'
+import { Divider, Drawer, Grid, IconButton, MenuItem } from '@mui/material'
 import React, { FC } from 'react'
 
 type HeaderMenuProps = {
     menuItems: JSX.Element
-    button: (
+    anchor: 'left' | 'top' | 'right' | 'bottom' | undefined
+    button?: (
         handleClick: (event: React.MouseEvent<HTMLElement>) => void
     ) => JSX.Element
 }
 
 const HeaderMenu: FC<HeaderMenuProps> = (props) => {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-    const open = !!anchorEl
+    const [open, setOpen] = React.useState(false)
 
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        event.preventDefault()
-        setAnchorEl(event.currentTarget)
-    }
+    const toggleMenu = (event: React.KeyboardEvent | React.MouseEvent) => {
+        if (
+            event.type === 'keydown' &&
+            ((event as React.KeyboardEvent).key === 'Tab' ||
+                (event as React.KeyboardEvent).key === 'Shift')
+        ) {
+            return
+        }
 
-    const handleClose = () => {
-        setAnchorEl(null)
+        setOpen((prev) => !prev)
     }
 
     return (
         <>
-            {props.button(handleClick)}
-            <Menu
-                anchorEl={anchorEl}
-                id="account-menu"
-                open={open}
-                onClose={handleClose}
-                onClick={handleClose}
-                PaperProps={{
-                    elevation: 0,
-                    sx: {
-                        overflow: 'visible',
-                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                        bgcolor: 'var(--color-primary)',
+            {props.button &&
+                props.button((e) => {
+                    e.preventDefault()
+                    toggleMenu(e)
+                })}
+            <Drawer
+                // hideBackdrop
+                variant="permanent"
+                sx={{
+                    '& .MuiDrawer-paper': {
+                        width: open ? '200px' : '56px',
+                        borderRadius: 0,
                         color: 'var(--color-text-secondary)',
-                        mt: 1.5,
-                        '& .MuiAvatar-root': {
-                            width: 32,
-                            height: 32,
-                            ml: -0.5,
-                            mr: 1,
-                        },
-                        '&:before': {
-                            content: '""',
-                            display: 'block',
-                            position: 'absolute',
-                            top: 0,
-                            right: 14,
-                            width: 10,
-                            height: 10,
-                            bgcolor: 'var(--color-primary)',
-                            transform: 'translateY(-50%) rotate(45deg)',
-                            zIndex: 0,
+                        bgcolor: 'var(--color-primary)',
+                        transition: 'width .4s ease',
+                    },
+                    'a, li': {
+                        svg: {
+                            mr: '16px !important',
                             borderRadius: 0,
                         },
                     },
+                    svg: {
+                        color: 'var(--color-text-secondary)',
+                    },
+                    li: {
+                        px: 2,
+                        py: 1.5,
+                    },
+                    a: {
+                        width: '100%',
+                        px: 2,
+                        py: 1.5,
+                        minHeight: 'auto !important',
+                    },
                 }}
-                transformOrigin={{
-                    horizontal: 'right',
-                    vertical: 'top',
-                }}
-                anchorOrigin={{
-                    horizontal: 'right',
-                    vertical: 'bottom',
-                }}
+                anchor={props.anchor}
+                open={open}
+                onClose={toggleMenu}
             >
+                <Grid container sx={{ p: 1, pb: '7px' }}>
+                    <IconButton onClick={toggleMenu}>
+                        {open ? <ChevronRight /> : <Menu />}
+                    </IconButton>
+                </Grid>
+                <Divider sx={{ mt: '0 !important' }} />
                 {props.menuItems.props.children}
-            </Menu>
+            </Drawer>
         </>
     )
 }

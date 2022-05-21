@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { AccountCircle, Logout, Star } from '@mui/icons-material'
 import { Link, NavLink } from 'react-router-dom'
 import styles from './Header.module.scss'
@@ -8,21 +8,33 @@ import { ROUTES } from '../../constants'
 import AppProgress from './AppProgress'
 import { useAppDispatch, useAppSelector } from 'hook/redux'
 import { userSlice } from 'store/reducers/userReducer'
-import { Container, Divider, MenuItem } from '@mui/material'
+import { Container, Divider, Drawer, MenuItem } from '@mui/material'
 import HeaderMenu from './HeaderMenu'
 import { useGetUserByTokenQuery } from 'api/userApi'
+import ConfirmDialog from 'components/confirmDialog/ConfirmDialog'
 
 const Header = () => {
     const { loadingProgress } = useAppSelector((state) => state.app)
     const { auth } = useAppSelector((state) => state.user)
     const { data: user } = useGetUserByTokenQuery()
     const dispatch = useAppDispatch()
+    const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
 
-    const logout = (e: any) => {
-        e.preventDefault()
+    const [rightMenu, setRightMenu] = useState(false)
 
-        dispatch(userSlice.actions.logout())
+    const toggleDrawer = (event: React.KeyboardEvent | React.MouseEvent) => {
+        if (
+            event.type === 'keydown' &&
+            ((event as React.KeyboardEvent).key === 'Tab' ||
+                (event as React.KeyboardEvent).key === 'Shift')
+        ) {
+            return
+        }
+
+        setRightMenu((prev) => !!prev)
     }
+
+    const logout = () => dispatch(userSlice.actions.logout())
 
     return (
         <header className={styles.header}>
@@ -46,45 +58,32 @@ const Header = () => {
                             </NavLink>
                         </PrivateBlock>
                         {auth ? (
-                            <HeaderMenu
-                                menuItems={
-                                    <>
-                                        <MenuItem
-                                            sx={{
-                                                p: 0,
-                                                a: { px: 2, py: 1 },
-                                            }}
-                                        >
+                            <>
+                                <HeaderMenu
+                                    anchor="right"
+                                    menuItems={
+                                        <>
                                             <NavLink to={ROUTES.profile.path}>
                                                 <AccountCircle sx={{ mr: 1 }} />
                                                 {ROUTES.profile.text}
                                             </NavLink>
-                                        </MenuItem>
-                                        <MenuItem
-                                            sx={{
-                                                p: 0,
-                                                a: { px: 2, py: 1 },
-                                            }}
-                                        >
                                             <NavLink to={ROUTES.bookmarks.path}>
                                                 <Star sx={{ mr: 1 }} />
                                                 {ROUTES.bookmarks.text}
                                             </NavLink>
-                                        </MenuItem>
-                                        <Divider />
-                                        <MenuItem onClick={logout}>
-                                            <Logout sx={{ mr: 1 }} />
-                                            Выйти
-                                        </MenuItem>
-                                    </>
-                                }
-                                button={(onClick) => (
-                                    <a href="/" onClick={onClick}>
-                                        <AccountCircle />
-                                        <span>{user?.email}</span>
-                                    </a>
-                                )}
-                            />
+                                            <Divider />
+                                            <MenuItem
+                                                onClick={() =>
+                                                    setOpenConfirmDialog(true)
+                                                }
+                                            >
+                                                <Logout sx={{ mr: 1 }} />
+                                                Выйти
+                                            </MenuItem>
+                                        </>
+                                    }
+                                />
+                            </>
                         ) : (
                             <NavLink to="/login">
                                 <AccountCircle />
@@ -94,6 +93,16 @@ const Header = () => {
                     </div>
                 </nav>
             </Container>
+            <ConfirmDialog
+                open={openConfirmDialog}
+                title="Уверены что хотите выйти?"
+                onAccept={() => {
+                    logout()
+                    setOpenConfirmDialog(false)
+                }}
+                onCancel={() => setOpenConfirmDialog(false)}
+                onClose={() => setOpenConfirmDialog(false)}
+            />
         </header>
     )
 }
