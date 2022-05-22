@@ -1,12 +1,21 @@
-export const ROLES = {
+type RolesType = {
+    [key: string]: string
+}
+export const ROLES: RolesType = {
     ADMIN: 'Admin',
     TEACHER: 'Teacher',
     STUDENT: 'Student',
     MODERATOR: 'Moderator',
 }
 
-export const ROUTES: any = {
-    '': {
+type RouteType = {
+    [key: string]: {
+        path: string
+        text: string
+    }
+}
+export const ROUTES: RouteType = {
+    home: {
         path: '/',
         text: 'Главная',
     },
@@ -21,5 +30,13 @@ export const ROUTES: any = {
     bookmarks: {
         path: '/bookmarks',
         text: 'Избранное',
+    },
+    authorMaterials: {
+        path: '/author-materials',
+        text: 'Мои издания',
+    },
+    addMaterial: {
+        path: '/add-material',
+        text: 'Добававить материал',
     },
 }

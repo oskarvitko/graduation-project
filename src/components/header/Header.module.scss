@@ -8,6 +8,7 @@
     left: 0;
     width: 100%;
     z-index: 1200;
+    transition: width .3s ease;
 
     a {
         color: var(--color-text-secondary);

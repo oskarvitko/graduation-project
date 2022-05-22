@@ -3,7 +3,7 @@ import useRole from 'hook/useRole'
 
 type PrivateBlockProps = {
     children: any
-    roles?: [string]
+    roles?: string[]
 }
 
 const PrivateBlock = (props: PrivateBlockProps) => {
