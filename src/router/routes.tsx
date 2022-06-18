@@ -1,6 +1,8 @@
 import Auth from 'pages/auth'
 import { HomePage } from '../pages'
 import Profile from 'pages/profile'
+import Materials from 'pages/materials'
+import Bookmarks from 'pages/bookmarks/Bookmarks'
 
 export type RouteType = {
     path: string
@@ -17,12 +19,12 @@ export const routes: RouteType[] = [
     },
     {
         path: '/materials',
-        component: <div>Materials</div>,
+        component: <Materials />,
         isPrivate: true,
     },
     {
         path: '/bookmarks',
-        component: <div>Избранное</div>,
+        component: <Bookmarks />,
         isPrivate: true,
     },
     {

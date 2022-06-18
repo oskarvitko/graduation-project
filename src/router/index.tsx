@@ -9,13 +9,17 @@ import { userSlice } from 'store/reducers/userReducer'
 import AppLoader from 'components/appLoader/appLoader'
 import { useLazyGetUserByTokenQuery } from 'api/userApi'
 import { Alert, Snackbar } from '@mui/material'
+import { useGetMaterialCategoriesQuery } from 'api/categoryApi'
+import { useGetAllSpecialtiesQuery } from 'api/specialtyApi'
 
 const AppRouter = () => {
     const dispatch = useAppDispatch()
     const [loading, setLoading] = useState(true)
     const [open, setOpen] = useState(false)
     const [getUserByToken] = useLazyGetUserByTokenQuery()
-    const { token } = useAppSelector((state) => state.user)
+    const { token, auth } = useAppSelector((state) => state.user)
+    useGetAllSpecialtiesQuery('', { skip: !auth })
+    useGetMaterialCategoriesQuery('', { skip: !auth })
 
     const checkIsTokenValid = async () => {
         setOpen(false)

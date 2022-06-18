@@ -36,7 +36,7 @@ const Auth: FC = () => {
         {
             isLoading: loginLoading,
             error: loginError,
-            data: loginToken,
+            data: loginData,
             isSuccess: loginSucces,
         },
     ] = useLoginMutation()
@@ -45,7 +45,7 @@ const Auth: FC = () => {
         {
             isLoading: registrateLoading,
             error: registrateError,
-            data: registrateToken,
+            data: registrateData,
             isSuccess: registrateSuccess,
         },
     ] = useRegistrateStudentMutation()
@@ -90,7 +90,7 @@ const Auth: FC = () => {
     }
 
     const loginHandler = useCallback(async () => {
-        if (loginSucces && loginToken) authenticate(loginToken)
+        if (loginSucces && loginData?.token) authenticate(loginData.token)
 
         if (loginError && 'status' in loginError) {
             if (loginError.status === 401) {
@@ -100,7 +100,8 @@ const Auth: FC = () => {
     }, [loginError, loginSucces])
 
     const registrationHandler = useCallback(async () => {
-        if (registrateSuccess && registrateToken) authenticate(registrateToken)
+        if (registrateSuccess && registrateData?.token)
+            authenticate(registrateData.token)
 
         if (registrateError && 'status' in registrateError) {
             if (registrateError.status === 422) {

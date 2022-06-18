@@ -2,32 +2,11 @@ import React, { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import Header from '../header'
 import { motion } from 'framer-motion'
-import { Container, Grid, styled } from '@mui/material'
+import { Container, Grid } from '@mui/material'
 import BreadCrumbs from './BreadCrumbs'
 import Sidebar from '../sidebar/Sidebar'
 import { useAppSelector } from 'hook/redux'
-
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
-    open?: boolean
-    auth?: boolean
-}>(({ theme, open, auth }) => ({
-    flexGrow: 1,
-    paddingTop: theme.spacing(2),
-    marginTop: theme.spacing(7),
-    minHeight: 'calc(100vh - 56px)',
-    transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginRight: auth ? 56 : 0,
-    ...(open && {
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginRight: '200px',
-    }),
-}))
+import { Main } from './Main'
 
 const Layout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false)

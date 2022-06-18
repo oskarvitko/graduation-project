@@ -1,10 +1,14 @@
 import { Backdrop, CircularProgress } from '@mui/material'
 import { FC } from 'react'
 
-const AppCircleLoader: FC = () => {
+type AppCircleLoaderProps = {
+    size?: number
+}
+
+const AppCircleLoader: FC<AppCircleLoaderProps> = ({ size = 80 }) => {
     return (
         <Backdrop open invisible>
-            <CircularProgress size={80} color="secondary" />
+            <CircularProgress size={size} color="secondary" />
         </Backdrop>
     )
 }
