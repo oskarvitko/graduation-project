@@ -1,20 +1,21 @@
 import { Breadcrumbs, Divider, Link, Typography } from '@mui/material'
 import { ROUTES } from '../../constants'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
+import useBreadcrumbs from 'hook/useBreadcrumbs'
 
-type Breadcrumb = {
+export type Breadcrumb = {
     path: string
     text: string
 } | null
 
 const BreadCrumbs: React.FC = () => {
     const location = useLocation()
-    const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([])
+    const { breadcrumbs, setBreadcrumbs } = useBreadcrumbs()
 
     const ignoreList: string[] = ['login']
 
-    useEffect(() => {
+    const updateBreadcrumbs = () => {
         const links = [...new Set(location.pathname.split('/'))]
 
         for (const item of ignoreList) {
@@ -32,6 +33,10 @@ const BreadCrumbs: React.FC = () => {
                 return null
             })
         )
+    }
+
+    useEffect(() => {
+        updateBreadcrumbs()
     }, [location.pathname])
 
     return breadcrumbs.length <= 1 ? null : (

@@ -1,37 +1,23 @@
-import {
-    Bookmark,
-    BookmarkBorder,
-    Star,
-    StarBorder,
-    StarBorderPurple500,
-} from '@mui/icons-material'
-import { Grid, ListItem, Paper } from '@mui/material'
+import { Bookmark, BookmarkBorder } from '@mui/icons-material'
+import { Grid, ListItem, Paper, Rating } from '@mui/material'
 import moment from 'moment'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { IMaterial } from 'structures/IMaterial'
+import { modeType } from './Materials'
 
 type MaterialItemProps = {
     item: IMaterial
+    mode: modeType
 }
 
 const MaterialItem: React.FC<MaterialItemProps> = ({ item }) => {
-    const ratingNumber = item.materialRating?.averageRating || 0
+    const navigate = useNavigate()
 
-    const ratingArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
-    Array.from(Array(Math.round(ratingNumber * 10)).keys()).forEach(
-        (number, i, arr) => {
-            if (number % 10 === 0) {
-                ratingArray[number / 10] = 2
-            }
-            if (arr.length - 1 === i && number % 10 !== 0) {
-                ratingArray[Math.floor(number / 10)] = 1
-            }
-        }
-    )
+    const onClick = () => navigate(`/material/${item.id}`)
 
     return (
-        <ListItem sx={{ p: 0, my: 2 }} button>
+        <ListItem sx={{ p: 0, my: 2 }} button onClick={onClick}>
             <Paper elevation={2} sx={{ borderRadius: 0, p: 2, width: '100%' }}>
                 <Grid
                     container
@@ -42,7 +28,7 @@ const MaterialItem: React.FC<MaterialItemProps> = ({ item }) => {
                         {item.name}
                     </Grid>
                     <Grid item xs={'auto'}>
-                        {item.bookmark ? (
+                        {item.bookmark?.isBookmark ? (
                             <Bookmark color="primary" />
                         ) : (
                             <BookmarkBorder color="primary" />
@@ -56,25 +42,11 @@ const MaterialItem: React.FC<MaterialItemProps> = ({ item }) => {
                     justifyContent="space-between"
                 >
                     <Grid item xs={6} sx={{ mb: -1 }}>
-                        {ratingArray.map((number) => {
-                            if (number === 2)
-                                return (
-                                    <Star fontSize={'small'} color="primary" />
-                                )
-                            if (number === 1)
-                                return (
-                                    <StarBorderPurple500
-                                        fontSize={'small'}
-                                        color="primary"
-                                    />
-                                )
-                            return (
-                                <StarBorder
-                                    fontSize={'small'}
-                                    color="primary"
-                                />
-                            )
-                        })}
+                        <Rating
+                            value={item.materialRating?.averageRating || 0}
+                            max={10}
+                            readOnly
+                        />
                     </Grid>
                     <Grid item xs={'auto'}>
                         {item.materialType}

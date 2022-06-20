@@ -1,14 +1,21 @@
 // import { useGetMaterialCategoriesQuery } from 'api/categoryApi'
 // import { useGetAllSpecialtiesQuery } from 'api/specialtyApi'
-import { MaterialFilterType } from 'pages/materials/MaterialsToolbar/MaterialsToolbar'
+import { modeType } from 'pages/materials/Materials'
+import { materialTypes } from '../constants'
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { IMaterial } from 'structures/IMaterial'
+import { useAppSelector } from './redux'
 
-const useFilter = (
+function useFilter(
     items: IMaterial[] | undefined,
-    options: MaterialFilterType
-) => {
-    const [filteredItems, setFilteredItems] = useState<IMaterial[]>()
+    mode: modeType,
+    setLoading: (value: boolean) => void
+): IMaterial[] {
+    const [filteredItems, setFilteredItems] = useState<IMaterial[]>([])
+    const location = useLocation()
+
+    const options = useAppSelector((state) => state.filter)
 
     // const { data: categories, isLoading: categoriesLoading } =
     //     useGetMaterialCategoriesQuery('')
@@ -18,16 +25,23 @@ const useFilter = (
     function filter(items: IMaterial[]): IMaterial[] {
         let filtered = [...items]
 
+        if (options.materialType.length !== materialTypes.length)
+            filtered = filtered.filter((item) => {
+                for (const type of options.materialType) {
+                    if (item.materialType.includes(type)) return true
+                }
+
+                return false
+            })
+
+        if (mode === 'bookmarks')
+            filtered = filtered.filter((item) => item.bookmark?.isBookmark)
+
         if (options.materialName)
             filtered = filtered.filter((item) =>
                 item.name
                     .toLowerCase()
                     .includes(options.materialName.toLocaleLowerCase())
-            )
-
-        if (options.materialType)
-            filtered = filtered.filter((item) =>
-                item.materialType.includes(options.materialType as string)
             )
 
         // if (options.specialtyId && specialties) filtered =filtered.filter (item => item.)
@@ -38,8 +52,14 @@ const useFilter = (
     useEffect(() => {
         if (!items) return setFilteredItems([])
 
-        setFilteredItems(filter(items))
-    }, [items, options])
+        setLoading(true)
+        const timeout = setTimeout(() => {
+            setFilteredItems(filter(items))
+            setLoading(false)
+        }, 400)
+
+        return () => clearTimeout(timeout)
+    }, [items, options, location.pathname])
 
     return filteredItems
 }

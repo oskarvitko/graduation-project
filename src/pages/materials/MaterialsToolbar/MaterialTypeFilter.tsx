@@ -1,61 +1,70 @@
 import {
+    Checkbox,
+    Chip,
     FormControl,
+    Grid,
     InputLabel,
+    ListItemText,
     MenuItem,
     Select,
     SelectChangeEvent,
 } from '@mui/material'
 import useId from '@mui/material/utils/useId'
-import { IMaterialType } from 'models/IMaterialType'
+import { materialTypes } from '../../../constants'
+import { useAppDispatch, useAppSelector } from 'hook/redux'
 import React from 'react'
+import { filterSlice } from 'store/reducers/filterReducer'
 
-type MaterialTypeFilterProps = {
-    onChange: (e: SelectChangeEvent) => void
-    value?: string
-}
-
-const MaterialTypeFilter: React.FC<MaterialTypeFilterProps> = ({
-    value = '',
-    onChange,
-}) => {
-    const types: IMaterialType[] = [
-        {
-            id: 0,
-            name: 'docx',
-        },
-        {
-            id: 1,
-            name: 'pdf',
-        },
-        {
-            id: 2,
-            name: 'ppt',
-        },
-        {
-            id: 3,
-            name: 'xlsx',
-        },
-    ]
+const MaterialTypeFilter: React.FC = () => {
     const id = useId()
+    const { materialType } = useAppSelector((state) => state.filter)
+    const dispatch = useAppDispatch()
+    const setMaterialType = (value: string[]) =>
+        dispatch(filterSlice.actions.setMaterialType(value))
+
+    const onChange = (e: SelectChangeEvent<string[]>) => {
+        const {
+            target: { value },
+        } = e
+
+        setMaterialType(typeof value === 'string' ? value.split(',') : value)
+    }
 
     return (
-        <FormControl size="small" fullWidth>
-            <InputLabel id={id}>Тип материала</InputLabel>
-            <Select
-                labelId={id}
-                value={value}
-                label="Тип материала"
-                onChange={onChange}
-            >
-                <MenuItem value={''}>Любой</MenuItem>
-                {types &&
-                    types.map((type) => (
-                        <MenuItem key={type.id} value={type.name}>
-                            {type.name}
-                        </MenuItem>
-                    ))}
-            </Select>
-        </FormControl>
+        <Grid container spacing={1} direction={'column'}>
+            <Grid item>
+                <FormControl size="small" fullWidth>
+                    <InputLabel id={id}>Формат материала</InputLabel>
+                    <Select
+                        multiple
+                        labelId={id}
+                        value={materialType}
+                        label="Формат материала"
+                        onChange={onChange}
+                        renderValue={(value) => 'Формат материала'}
+                    >
+                        {materialTypes &&
+                            materialTypes.map((type) => (
+                                <MenuItem key={type} value={type}>
+                                    <Checkbox
+                                        checked={
+                                            materialType.indexOf(type) > -1
+                                        }
+                                    />
+                                    <ListItemText>{type}</ListItemText>
+                                </MenuItem>
+                            ))}
+                    </Select>
+                </FormControl>
+            </Grid>
+            <Grid item container spacing={1}>
+                {materialType.map((type) => (
+                    <Grid item key={type}>
+                        <Chip label={type} size={'small'} />
+                    </Grid>
+                ))}
+            </Grid>
+        </Grid>
     )
 }
 

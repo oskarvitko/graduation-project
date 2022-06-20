@@ -6,25 +6,35 @@ import { IMaterial } from 'structures/IMaterial'
 import Pagination from './Pagination'
 import { Box } from '@mui/system'
 import AppCircleLoader from 'components/appCircleLoader/appCircleLoader'
-import MaterialsToolbar, {
-    MaterialFilterType,
-} from './MaterialsToolbar/MaterialsToolbar'
 import usePagination from 'hook/usePagination'
 import useSort from 'hook/useSort'
 import useFilter from 'hook/useFilter'
+import MaterialsToolbar from './MaterialsToolbar/MaterialsToolbar'
+import { useAppSelector } from 'hook/redux'
 
-const Materials: React.FC = () => {
+export type modeType = 'bookmarks' | undefined
+
+type MaterialsProps = {
+    mode?: modeType
+}
+
+const Materials: React.FC<MaterialsProps> = ({ mode }) => {
     const [toolbarLoading, setToolbarLoading] = useState(true)
+    const [loading, setLoading] = useState(true)
     const [fetchMaterials, { data: materials, isLoading }] =
         useLazyGetMaterialsQuery()
 
-    const [filter, setFilter] = useState<MaterialFilterType>({
-        materialName: '',
-        courses: [],
-    })
-    const filteredMaterials = useFilter(materials, filter)
+    const filteredMaterials = useFilter(materials, mode, setLoading)
 
-    const sortedMaterials = useSort<IMaterial>(filteredMaterials, 'name', 'ASC')
+    const { field, sort, getValues } = useAppSelector(
+        (state) => state.materialSort
+    )
+    const sortedMaterials = useSort<IMaterial>(
+        filteredMaterials,
+        field,
+        sort,
+        getValues
+    )
 
     const [page, setPage] = useState(1)
 
@@ -48,9 +58,6 @@ const Materials: React.FC = () => {
         <>
             <MaterialsToolbar
                 disabled={isLoading}
-                data={materials || []}
-                setFilteredData={(f) => f}
-                setFilter={setFilter}
                 setLoading={setToolbarLoading}
             />
             <Divider sx={{ my: 1 }} />
@@ -60,7 +67,7 @@ const Materials: React.FC = () => {
                     overflowY: 'auto',
                 }}
             >
-                {isLoading ? (
+                {isLoading || loading ? (
                     <AppCircleLoader size={50} />
                 ) : (
                     <>
@@ -70,6 +77,7 @@ const Materials: React.FC = () => {
                                     <MaterialItem
                                         key={material.id}
                                         item={material}
+                                        mode={mode}
                                     />
                                 ))}
                             </List>
@@ -88,9 +96,9 @@ const Materials: React.FC = () => {
             <Divider />
             <Pagination
                 page={page}
-                total={Math.ceil((materials?.length || 1) / ITEMS_PER_PAGE)}
+                total={Math.ceil(filteredMaterials.length / ITEMS_PER_PAGE)}
                 setPage={changePagination}
-                disabled={isLoading}
+                disabled={isLoading || loading}
             />
         </>
     )

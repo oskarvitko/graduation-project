@@ -13,7 +13,7 @@ type ConfirmDialogProps = {
     onAccept: () => void
     onCancel: () => void
     title?: string
-    text?: string
+    text?: string | JSX.Element
     open: boolean
     onClose: () => void
 }

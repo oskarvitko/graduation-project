@@ -27,8 +27,21 @@ export const userApi = createApi({
             query: () => '/User/getUserInfo',
         }),
         getTeacherByStudentUserId: build.query<IUser[], string>({
-            query: (userId) =>
-                `/User/getTeacherByStudentUserId?userId=${userId}`,
+            query: (userId) => ({
+                url: '/User/getTeachersByStudentUserId',
+                method: 'GET',
+                params: { userId },
+            }),
+        }),
+        getAllUsers: build.query<IUser[], string>({
+            query: () => '/User/getAllUsers',
+        }),
+        getUserById: build.query<IUser, string>({
+            query: (userId) => ({
+                url: '/User/getUserById',
+                method: 'GET',
+                params: { userId },
+            }),
         }),
     }),
 })
@@ -39,6 +52,8 @@ export const {
     useLazyGetUserByTokenQuery,
     useGetTeacherByStudentUserIdQuery,
     useLazyGetTeacherByStudentUserIdQuery,
+    useGetAllUsersQuery,
+    useLazyGetUserByIdQuery,
 } = userApi
 
 export const useGetUserByTokenQuery = () =>

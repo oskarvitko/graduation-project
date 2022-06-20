@@ -1,86 +1,53 @@
-import { Grid, SelectChangeEvent, CircularProgress } from '@mui/material'
+import { Grid, CircularProgress, Divider } from '@mui/material'
 import { useGetAllSpecialtiesQuery } from 'api/specialtyApi'
-import {
-    useGetTeacherByStudentUserIdQuery,
-    useGetUserByTokenQuery,
-} from 'api/userApi'
+import { useGetUserByTokenQuery } from 'api/userApi'
 import { ROLES } from '../../../constants'
 import useRole from 'hook/useRole'
-import React, { useEffect, useState } from 'react'
-import { IMaterial } from 'structures/IMaterial'
+import React, { useEffect } from 'react'
 import Search from './Search'
-import SpecialtyFilter from './SpecialtyFilter'
-import TeachersFilter from './TeachersFilter'
-import MaterialTypeFilter from './MaterialTypeFilter'
 import { useGetMaterialCategoriesQuery } from 'api/categoryApi'
-import MaterialCategoryFilter from './MaterialCategoryFilter'
-
-export type MaterialFilterType = {
-    materialName: string
-    specialtyId?: string
-    teacherUserId?: string
-    courses: number[]
-    materialType?: string
-}
+import { useLocation } from 'react-router-dom'
+import { filterSlice } from 'store/reducers/filterReducer'
+import { useAppDispatch } from 'hook/redux'
+import FilterMenu from './FilterMenu'
+import SortMenu from './SortMenu'
+import { materialSortSlice } from 'store/reducers/materialSortReducer'
 
 type MaterialsToolbatProps = {
-    data: IMaterial[]
     disabled: boolean
-    setFilteredData: (data: IMaterial[]) => void
-    setFilter: (filter: MaterialFilterType) => void
     setLoading: (value: boolean) => void
 }
 
 const MaterialsToolbar: React.FC<MaterialsToolbatProps> = ({
-    data,
-    disabled,
-    setFilteredData,
-    setFilter,
     setLoading,
+    disabled,
 }) => {
     const { hasRole } = useRole()
     const { data: user } = useGetUserByTokenQuery()
-    const { data: teachers, isLoading: teachersLoading } =
-        useGetTeacherByStudentUserIdQuery((user?.studentId || '') as string)
+
+    const { resetFilter } = filterSlice.actions
+    const { resetSort } = materialSortSlice.actions
+    const dispatch = useAppDispatch()
+
+    // const { data: teachers, isLoading: teachersLoading } =
+    //     useGetTeacherByStudentUserIdQuery((user?.studentId || '') as string)
     const { data: specialties, isLoading: specialtyLoading } =
         useGetAllSpecialtiesQuery('')
     const { data: categories, isLoading: categoriesLoading } =
         useGetMaterialCategoriesQuery('')
 
-    const componentLoading =
-        teachersLoading || specialtyLoading || categoriesLoading
+    const location = useLocation()
 
-    const courses = !hasRole(ROLES.ADMIN)
-        ? user
-            ? [user.course]
-            : []
-        : [1, 2, 3, 4]
-
-    const [materialName, setMaterialName] = useState('')
-    const [materialType, setMaterialType] = useState<string | undefined>(
-        undefined
-    )
-    const [specialty, setSpecialty] = useState<string | undefined>(
-        user?.specialtyId || undefined
-    )
-    const [materialCategory, setMaterialCategory] = useState<
-        string[] | undefined
-    >(categories?.map((item) => item.category))
-    const [teacherId, setTeacherId] = useState<string | undefined>(undefined)
-
-    useEffect(() => {
-        setFilter({
-            materialName,
-            specialtyId: specialty,
-            teacherUserId: teacherId,
-            materialType,
-            courses,
-        })
-    }, [materialName, specialty, teacherId, materialType])
+    const componentLoading = specialtyLoading || categoriesLoading
 
     useEffect(() => {
         setLoading(componentLoading)
-    }, [teachersLoading, specialtyLoading, categoriesLoading])
+    }, [specialtyLoading, categoriesLoading])
+
+    useEffect(() => {
+        dispatch(resetFilter())
+        dispatch(resetSort())
+    }, [location.pathname])
 
     if (componentLoading)
         return (
@@ -89,56 +56,19 @@ const MaterialsToolbar: React.FC<MaterialsToolbatProps> = ({
 
     return (
         <Grid container spacing={1} alignItems="center">
-            <Grid item xs container spacing={1} alignItems="center">
-                <LoadedItem
-                    xs={3}
-                    loading={specialtyLoading}
-                    data={hasRole(ROLES.STUDENT) ? null : specialties}
-                >
-                    <SpecialtyFilter
-                        specialties={specialties}
-                        value={specialty}
-                        onChange={(e: SelectChangeEvent) =>
-                            setSpecialty(e.target.value || undefined)
-                        }
-                    />
-                </LoadedItem>
-                <LoadedItem
-                    xs={3}
-                    loading={categoriesLoading}
-                    data={categories}
-                >
-                    <MaterialCategoryFilter
-                        categories={categories || []}
-                        value={materialCategory}
-                        onChange={(
-                            e: SelectChangeEvent<typeof materialCategory>
-                        ) => {
-                            setMaterialCategory(
-                                typeof e.target.value === 'string'
-                                    ? e.target.value.split(',')
-                                    : e.target.value
-                            )
-                        }}
-                    />
-                </LoadedItem>
-                <LoadedItem xs={3} data={[]}>
-                    <MaterialTypeFilter
-                        value={materialType}
-                        onChange={(e: SelectChangeEvent) =>
-                            setMaterialType(e.target.value || undefined)
-                        }
-                    />
-                </LoadedItem>
-                <LoadedItem xs={3} loading={teachersLoading} data={teachers}>
-                    <TeachersFilter
-                        teachers={teachers}
-                        onChange={setTeacherId}
-                    />
-                </LoadedItem>
+            <Grid item xs container alignItems="center">
+                <Grid item xs={'auto'}>
+                    <FilterMenu />
+                </Grid>
+                <Grid item xs={'auto'}>
+                    <Divider sx={{ height: 25 }} orientation="vertical" />
+                </Grid>
+                <Grid item xs={'auto'}>
+                    <SortMenu />
+                </Grid>
             </Grid>
             <Grid item xs={'auto'}>
-                <Search onChange={setMaterialName} />
+                <Search />
             </Grid>
         </Grid>
     )

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 function useSort<Type>(
-    items: Type[] | undefined,
+    items: Type[],
     field: keyof Type,
     sort: 'ASC' | 'DESC',
     getValues?: (a: Type, b: Type) => [any, any]

@@ -1,4 +1,9 @@
-import { AccountCircle, LibraryBooks, Logout, Star } from '@mui/icons-material'
+import {
+    AccountCircle,
+    Bookmark,
+    LibraryBooks,
+    Logout,
+} from '@mui/icons-material'
 import SidebarMenu from 'components/sidebar/SidebarMenu'
 import HeaderTooltip from 'components/header/HeaderTooltip'
 import { ROUTES, ROLES } from '../../constants'
@@ -42,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, setOpen }) => {
                             open={open}
                         >
                             <NavLink to={ROUTES.bookmarks.path}>
-                                <Star sx={{ mr: 1 }} />
+                                <Bookmark sx={{ mr: 1 }} />
                                 {ROUTES.bookmarks.text}
                             </NavLink>
                         </HeaderTooltip>

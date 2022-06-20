@@ -1,15 +1,16 @@
 import { IconButton, TextField } from '@mui/material'
 import { Search as SearchIcon } from '@mui/icons-material'
 import React, { useEffect, useRef, useState } from 'react'
+import { useAppDispatch, useAppSelector } from 'hook/redux'
+import { filterSlice } from 'store/reducers/filterReducer'
 
-type SearchProps = {
-    onChange: (value: string) => void
-}
+const Search: React.FC = () => {
+    const { materialName } = useAppSelector((state) => state.filter)
+    const { setMaterialName } = filterSlice.actions
+    const dispatch = useAppDispatch()
 
-const Search: React.FC<SearchProps> = (props) => {
     const [open, setOpen] = useState(false)
     const ref = useRef<HTMLInputElement>(null)
-    const [value, setValue] = useState('')
 
     useEffect(() => {
         if (open) {
@@ -18,16 +19,8 @@ const Search: React.FC<SearchProps> = (props) => {
     }, [open])
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value)
+        dispatch(setMaterialName(event.target.value))
     }
-
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            props.onChange(value)
-        }, 400)
-
-        return () => clearTimeout(timeout)
-    }, [value])
 
     return (
         <TextField
@@ -35,7 +28,7 @@ const Search: React.FC<SearchProps> = (props) => {
             inputRef={ref}
             variant="outlined"
             disabled={!open}
-            value={value}
+            value={materialName}
             onChange={onChange}
             placeholder="Название учебного материала"
             sx={{

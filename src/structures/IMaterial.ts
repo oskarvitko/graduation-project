@@ -1,12 +1,9 @@
+import { BookmarkType } from 'api/materialApi'
+import { IRating } from './IRating'
+
 export interface IMaterial {
-    bookmark: boolean
-    materialRating: {
-        id: number
-        userId: string
-        userRating: number
-        averageRating: number
-        materialId: number
-    } | null
+    bookmark: BookmarkType | null
+    materialRating: IRating | null
     id: number
     teacherUserId: string
     materialCategoryId: number

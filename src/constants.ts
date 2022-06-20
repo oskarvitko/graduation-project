@@ -39,4 +39,16 @@ export const ROUTES: RouteType = {
         path: '/add-material',
         text: 'Добававить материал',
     },
+    material: {
+        path: '/material',
+        text: 'Учебные издания',
+    },
 }
+
+export const materialTypes: string[] = [
+    'docx',
+    'pdf',
+    'ppt',
+    'xlsx',
+    'external_resource',
+]
