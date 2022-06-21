@@ -255,8 +255,18 @@ const MaterialDetails: React.FC = () => {
                                 </Button>
                             ) : (
                                 <Typography
-                                    className="MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButtonBase-root  css-1thfajl-MuiButtonBase-root-MuiButton-root"
-                                    sx={{ cursor: 'text' }}
+                                    sx={{
+                                        fontWeight: 500,
+                                        fontSize: '0.875rem',
+                                        lineHeight: 1.75,
+                                        letterSpacing: '0.02857em',
+                                        textTransform: 'uppercase',
+                                        minWidth: 64,
+                                        padding: '5px 15px',
+                                        borderRadius: '4px',
+                                        border: '1px solid rgba(173, 8, 5, 0.5)',
+                                        color: '#ad0805',
+                                    }}
                                 >
                                     Ваша оценка - {rated}
                                 </Typography>
