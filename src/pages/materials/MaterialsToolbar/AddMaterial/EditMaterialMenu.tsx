@@ -188,7 +188,7 @@ const EditMaterialMenu: React.FC<{ refetchMaterials: () => void }> = ({
                 open: true,
                 message: 'Выберите файл или введите URL!',
             })
-        if (!specialtyIds.length)
+        if (!specialtyIds.length && createMode)
             return setPopup({
                 open: true,
                 message: 'Выберите специальность!',
