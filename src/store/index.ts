@@ -8,6 +8,7 @@ import { userApi } from 'api/userApi'
 import appSlice from './reducers/appReducer'
 import filterSlice from './reducers/filterReducer'
 import materialSortReducer from './reducers/materialSortReducer'
+import materialsReducer from './reducers/materialsReducer'
 import userSlice from './reducers/userReducer'
 
 const rootReducer = combineReducers({
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     app: appSlice,
     filter: filterSlice,
     materialSort: materialSortReducer,
+    materials: materialsReducer,
     [specialtyApi.reducerPath]: specialtyApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,

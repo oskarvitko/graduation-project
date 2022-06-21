@@ -7,4 +7,6 @@ export interface IUser {
     course: number
     specialtyId: string
     role: string
+    isArchived: boolean
+    isBlocked: boolean
 }

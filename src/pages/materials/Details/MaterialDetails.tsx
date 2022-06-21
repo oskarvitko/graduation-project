@@ -15,7 +15,7 @@ import {
     useGetMaterialRatingsQuery,
 } from 'api/materialApi'
 import { useGetAllSpecialtiesQuery } from 'api/specialtyApi'
-import { useLazyGetSubjectsByTeacherIdQuery } from 'api/subjectApi'
+import { useLazyGetAllSubjectsQuery } from 'api/subjectApi'
 import { useGetUserByTokenQuery, useLazyGetUserByIdQuery } from 'api/userApi'
 import AppCircleLoader from 'components/appCircleLoader/appCircleLoader'
 import { materialTypes } from '../../../constants'
@@ -39,17 +39,21 @@ export type downloadProgressType = {
 const MaterialDetails: React.FC = () => {
     const { id } = useParams()
 
-    const { data: materials } = useGetMaterialsQuery('')
     const { data: user } = useGetUserByTokenQuery()
+    const { data: materials } = useGetMaterialsQuery(user?.id || '')
     const [updateBookmark] = useUpdateBookmarkMutation()
     const [addRating] = useAddRatingMutation()
     const [fetchTeacher] = useLazyGetUserByIdQuery()
     const [fetchCatergories] = useLazyGetMaterialCategoriesQuery()
-    const [fetchSubjects] = useLazyGetSubjectsByTeacherIdQuery()
+    const [fetchSubjects] = useLazyGetAllSubjectsQuery()
     const [getResourceUrl] = useLazyGetResourceURLQuery()
     const { data: specialties, isLoading: specialtiesLoading } =
-        useGetAllSpecialtiesQuery('')
-    const { data: ratings } = useGetMaterialRatingsQuery('')
+        useGetAllSpecialtiesQuery(
+            materials?.map((item) => item.id).join('') || ''
+        )
+    const { data: ratings } = useGetMaterialRatingsQuery(user?.id || '', {
+        skip: !user,
+    })
 
     const [isLoading, setLoading] = useState(true)
     const [fileLoading, setFileLoading] = useState(false)
@@ -76,7 +80,7 @@ const MaterialDetails: React.FC = () => {
     const fetchData = useCallback(async () => {
         if (!materials || specialtiesLoading) return
         const material = materials.find((item) => item.id === Number(id))
-        if (!material) return
+        if (!material) return setLoading(false)
 
         setMaterial(material)
 
@@ -91,17 +95,22 @@ const MaterialDetails: React.FC = () => {
         const teacher = await fetchTeacher(material.teacherUserId).unwrap()
         if (teacher) {
             setTeacher(teacher)
-            const specialty = specialties?.find(
-                (item) => item.id === teacher.specialtyId
-            )
-            if (specialty) {
-                setSpecialty(specialty.name)
-            }
         }
 
-        const subjects = await fetchSubjects(
-            'b4e5d794-dea2-4004-accc-a8e704cbce98'
-        ).unwrap()
+        const specialty = specialties?.find((item) => {
+            for (let _material of item.materials) {
+                if (_material.id === material.id) {
+                    return true
+                }
+            }
+
+            return false
+        })
+        if (specialty) {
+            setSpecialty(specialty.name)
+        }
+
+        const subjects = await fetchSubjects(material.id.toString()).unwrap()
         if (subjects) {
             let subject = ''
             subjects.forEach((item) => {

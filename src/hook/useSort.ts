@@ -17,7 +17,6 @@ function useSort<Type>(
             case 'string':
                 sorted = sorted.sort((a, b) => {
                     const [first, second] = getValuesFromObject(a, b)
-
                     if (first < second) return -1
                     if (first > second) return 1
                     return 0

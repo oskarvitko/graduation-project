@@ -1,5 +1,5 @@
 import { Divider, List, Typography } from '@mui/material'
-import { useLazyGetMaterialsQuery } from 'api/materialApi'
+import { useGetMaterialsQuery } from 'api/materialApi'
 import React, { useEffect, useState } from 'react'
 import MaterialItem from './MaterialItem'
 import { IMaterial } from 'structures/IMaterial'
@@ -11,18 +11,25 @@ import useSort from 'hook/useSort'
 import useFilter from 'hook/useFilter'
 import MaterialsToolbar from './MaterialsToolbar/MaterialsToolbar'
 import { useAppSelector } from 'hook/redux'
+import { useGetUserByTokenQuery } from 'api/userApi'
 
-export type modeType = 'bookmarks' | undefined
+export type modeType = 'bookmarks' | 'materials'
 
 type MaterialsProps = {
     mode?: modeType
 }
 
-const Materials: React.FC<MaterialsProps> = ({ mode }) => {
+const Materials: React.FC<MaterialsProps> = ({ mode = 'materials' }) => {
     const [toolbarLoading, setToolbarLoading] = useState(true)
     const [loading, setLoading] = useState(true)
-    const [fetchMaterials, { data: materials, isLoading }] =
-        useLazyGetMaterialsQuery()
+    const { data: user } = useGetUserByTokenQuery()
+    const {
+        data: materials,
+        isLoading,
+        refetch,
+    } = useGetMaterialsQuery(user?.id || '', {
+        skip: toolbarLoading,
+    })
 
     const filteredMaterials = useFilter(materials, mode, setLoading)
 
@@ -46,19 +53,18 @@ const Materials: React.FC<MaterialsProps> = ({ mode }) => {
     )
 
     useEffect(() => {
-        if (!toolbarLoading) {
-            setPage(1)
-            fetchMaterials('')
-        }
-    }, [toolbarLoading])
+        setPage(1)
+    }, [materials])
 
     const changePagination = (page: number) => setPage(page)
 
     return (
         <>
             <MaterialsToolbar
+                refetchMaterials={refetch}
                 disabled={isLoading}
                 setLoading={setToolbarLoading}
+                mode={mode}
             />
             <Divider sx={{ my: 1 }} />
             <Box
@@ -72,7 +78,7 @@ const Materials: React.FC<MaterialsProps> = ({ mode }) => {
                 ) : (
                     <>
                         {paginatedMaterials?.length ? (
-                            <List>
+                            <List sx={{ py: 0 }}>
                                 {paginatedMaterials?.map((material) => (
                                     <MaterialItem
                                         key={material.id}

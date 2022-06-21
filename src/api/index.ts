@@ -4,9 +4,14 @@ import {
     fetchBaseQuery,
     FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react'
+import axios from 'axios'
 import { userSlice } from 'store/reducers/userReducer'
 
 export const API_URL = process.env.REACT_APP_API_URL
+
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
+    'token'
+)}`
 
 export const baseQuery = fetchBaseQuery({
     baseUrl: API_URL + '/api',

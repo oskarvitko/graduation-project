@@ -2,6 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 import { API_URL, baseApiQuery } from 'api'
 import axios from 'axios'
 import { downloadProgressType } from 'pages/materials/Details/MaterialDetails'
+import { IFile } from 'structures/IFile'
 
 export const fileApi = createApi({
     reducerPath: 'fileApi',
@@ -25,9 +26,6 @@ export const downloadFile = async (
         const response = await axios.get(
             API_URL + `/api/Material/downloadMaterial?materialId=${id}`,
             {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
                 responseType: 'blob',
                 onDownloadProgress: (progress: ProgressEvent) => {
                     updateDownloadProgress({
@@ -41,6 +39,41 @@ export const downloadFile = async (
 
         if (response.status === 200) {
             return response.data
+        }
+    } catch (e) {
+    } finally {
+        updateDownloadProgress({
+            total: 0,
+            current: 0,
+            progress: 0,
+        })
+    }
+}
+export const uploadFile = async (
+    file: File | string,
+    updateDownloadProgress: (progress: downloadProgressType) => void
+) => {
+    try {
+        const formData = new FormData()
+        typeof file === 'string'
+            ? formData.append('url', file)
+            : formData.append('file', file)
+        const response = await axios.post(
+            API_URL + `/api/Material/uploadFile`,
+            formData,
+            {
+                onUploadProgress: (progress: ProgressEvent) => {
+                    updateDownloadProgress({
+                        total: 100,
+                        current: (progress.loaded * 100) / progress.total,
+                        progress: (progress.loaded * 100) / progress.total,
+                    })
+                },
+            }
+        )
+
+        if (response.status === 200) {
+            return response.data as IFile
         }
     } catch (e) {
     } finally {

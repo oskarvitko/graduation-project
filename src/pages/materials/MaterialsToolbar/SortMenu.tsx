@@ -44,13 +44,21 @@ const fields: fieldType[] = [
 ]
 
 function getSorts(isDate: boolean): sortType[] {
+    let nameASC = 'От А до Я'
+    let nameDESC = 'От А до Я'
+
+    if (isDate) {
+        nameASC = 'Сначала старые'
+        nameDESC = 'Сначала новые'
+    }
+
     return [
         {
-            name: isDate ? 'Сначала старые' : 'От А до Я',
+            name: nameASC,
             value: 'ASC',
         },
         {
-            name: isDate ? 'Сначала новые' : 'От Я до А',
+            name: nameDESC,
             value: 'DESC',
         },
     ]

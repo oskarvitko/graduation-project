@@ -31,17 +31,13 @@ export const ROUTES: RouteType = {
         path: '/bookmarks',
         text: 'Избранное',
     },
-    authorMaterials: {
-        path: '/author-materials',
-        text: 'Мои издания',
-    },
-    addMaterial: {
-        path: '/add-material',
-        text: 'Добававить материал',
-    },
     material: {
         path: '/material',
         text: 'Учебные издания',
+    },
+    users: {
+        path: '/users',
+        text: 'Пользователи',
     },
 }
 

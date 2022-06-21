@@ -9,8 +9,21 @@ export const specialtyApi = createApi({
         getAllSpecialties: build.query<ISpecialty[], string>({
             query: () => '/Specialty/getAllSpecialties',
         }),
+        addMaterialToSpecialties: build.mutation<
+            string,
+            { materialId: number; specialtyIds: number[] }
+        >({
+            query: (data) => ({
+                url: '/Specialty/addMaterialToSpecialties',
+                method: 'POST',
+                body: data,
+            }),
+        }),
     }),
 })
 
-export const { useLazyGetAllSpecialtiesQuery, useGetAllSpecialtiesQuery } =
-    specialtyApi
+export const {
+    useLazyGetAllSpecialtiesQuery,
+    useGetAllSpecialtiesQuery,
+    useAddMaterialToSpecialtiesMutation,
+} = specialtyApi

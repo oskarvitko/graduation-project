@@ -3,16 +3,21 @@ import { materialTypes } from '../../constants'
 
 interface FilterState {
     materialName: string
-    specialtyId?: string
+    specialtyId: string
     teacherUserId?: string
     courses: number[]
     materialType: string[]
+    rating: number
+    subjects: string
 }
 
 const initialState: FilterState = {
     materialName: '',
     courses: [],
     materialType: materialTypes,
+    specialtyId: '',
+    rating: 0,
+    subjects: '',
 }
 
 export const filterSlice = createSlice({
@@ -33,10 +38,22 @@ export const filterSlice = createSlice({
             state.materialName = action.payload.materialName
             state.materialType = action.payload.materialType
         },
+        setSpecialty(state, action: PayloadAction<string>) {
+            state.specialtyId = action.payload
+        },
+        setRating(state, action: PayloadAction<number>) {
+            state.rating = action.payload
+        },
+        setSubjects(state, action: PayloadAction<string>) {
+            state.subjects = action.payload
+        },
         resetFilter(state) {
             state.courses = initialState.courses
             state.materialName = initialState.materialName
             state.materialType = initialState.materialType
+            state.specialtyId = initialState.specialtyId
+            state.rating = initialState.rating
+            state.subjects = initialState.subjects
         },
     },
 })

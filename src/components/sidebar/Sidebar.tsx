@@ -1,9 +1,4 @@
-import {
-    AccountCircle,
-    Bookmark,
-    LibraryBooks,
-    Logout,
-} from '@mui/icons-material'
+import { AccountCircle, Bookmark, Logout, PeopleAlt } from '@mui/icons-material'
 import SidebarMenu from 'components/sidebar/SidebarMenu'
 import HeaderTooltip from 'components/header/HeaderTooltip'
 import { ROUTES, ROLES } from '../../constants'
@@ -52,14 +47,14 @@ const Sidebar: React.FC<SidebarProps> = ({ open, setOpen }) => {
                             </NavLink>
                         </HeaderTooltip>
                         <Divider />
-                        <PrivateBlock roles={[ROLES.TEACHER, ROLES.ADMIN]}>
+                        <PrivateBlock roles={[ROLES.MODERATOR, ROLES.ADMIN]}>
                             <HeaderTooltip
-                                title={ROUTES.authorMaterials.text}
+                                title={ROUTES.users.text}
                                 open={open}
                             >
-                                <NavLink to={ROUTES.authorMaterials.path}>
-                                    <LibraryBooks sx={{ mr: 1 }} />
-                                    {ROUTES.authorMaterials.text}
+                                <NavLink to={ROUTES.users.path}>
+                                    <PeopleAlt sx={{ mr: 1 }} />
+                                    {ROUTES.users.text}
                                 </NavLink>
                             </HeaderTooltip>
                             <Divider />

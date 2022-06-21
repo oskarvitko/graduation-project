@@ -13,4 +13,6 @@ export interface IMaterial {
     course: number
     materialType: string
     description: string
+    specialtyId?: number
+    subjectId?: number
 }

@@ -4,6 +4,8 @@ import Profile from 'pages/profile'
 import Materials from 'pages/materials'
 import MaterialDetails from 'pages/materials/Details/MaterialDetails'
 import { Navigate } from 'react-router-dom'
+import Users from 'pages/users/Users'
+import { ROLES } from '../constants'
 
 export type RouteType = {
     path: string
@@ -47,5 +49,11 @@ export const routes: RouteType[] = [
         path: '/material/:id',
         component: <MaterialDetails />,
         isPrivate: true,
+    },
+    {
+        path: '/users',
+        isPrivate: true,
+        component: <Users />,
+        roles: [ROLES.MODERATOR, ROLES.ADMIN],
     },
 ]
